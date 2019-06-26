@@ -48,7 +48,7 @@ class AuthController extends Controller
             'access_token' => $token,
             // 'token_type'   => 'bearer',
             // 'expires_in'   => auth('api')->factory()->getTTL() * 60
-            'name' => User::first()->name 
+            'name' => auth('api')->user()->name
         ]);
     }
 
@@ -56,14 +56,14 @@ class AuthController extends Controller
 
 
     public function getTokenFromUserObject(){
-        $user = User::first();
+        $user = auth('api')->user();
         $token = JWTAuth::fromUser($user);
         return $this->respondWithToken($token);
     }
 
     public function getTokenFromOtherAttributes(){
 
-        $customClaims = ['foo' => User::first()->email, 'baz' => User::first()->id];
+        $customClaims = ['foo' => auth('api')->user()->email, 'baz' => auth('api')->user()->id];
  
         $payload = JWTFactory::make($customClaims);
          
